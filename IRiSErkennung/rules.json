@@ -194,7 +194,7 @@
                 },
                 {
                     "type": "VariableType",
-                    "parameter": 1
+                    "parameter": [1, 2]
                 },
                 {
                     "type": "InstanceNameContains",

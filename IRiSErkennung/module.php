@@ -286,7 +286,7 @@ class IRiSErkennung extends IPSModule
                     return false;
                 }
                 else {
-                    return (strpos(strtolower($name, $rule['parameter'])) !== false);
+                    return (strpos($name, strtolower($rule['parameter'])) !== false);
                 }
             }
 

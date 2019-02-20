@@ -85,7 +85,14 @@ class IRiSErkennung extends IPSModule
                                     ["caption" => "-", "value" => 0],
                                     ["caption" => "Light (Actor)", "value" => 1],
                                     ["caption" => "Smoke Detector", "value" => 2],
-                                    ["caption" => "Not relevant for IRiS", "value" => 3]
+                                    ["caption" => "Switch/Trigger (Sensor)", "value" => 3],
+                                    ["caption" => "Motion/Presence Sensor", "value" => 4],
+                                    ["caption" => "Door Opener", "value" => 5],
+                                    ["caption" => "Door Sensor", "value" => 6],
+                                    ["caption" => "Window Opener", "value" => 7],
+                                    ["caption" => "Window Sensor", "value" => 8],
+                                    ["caption" => "Temperature Sensor", "value" => 9],
+                                    ["caption" => "Not relevant for IRiS", "value" => 10]
                                 ]
                             ]
                         ], [
@@ -110,7 +117,8 @@ class IRiSErkennung extends IPSModule
                             "confirm" => "This operation will reset all current configuration and reset the list. Are you sure?"
                         ], [
                             "type" => "Button",
-                            "caption" => "Send data to Symcon"
+                            "caption" => "Send data to Symcon",
+                            "onClick" => 'IE_SendData($id);'
                         ]
                     ]
                 ]
@@ -134,7 +142,7 @@ class IRiSErkennung extends IPSModule
             $instanceValues = [[
                 'id' => $instanceID,
                 'objectID' => $instanceID,
-                'detectedType' => $this->Translate('Light (Actor)'),
+                'detectedType' => '',
                 'correct' => true,
                 'realType' => 0,
                 'remark' => ''
@@ -220,6 +228,61 @@ class IRiSErkennung extends IPSModule
 
         IPS_SetProperty($this->InstanceID, 'InstanceList', json_encode($listValues));
         IPS_ApplyChanges($this->InstanceID);
+    }
+
+    public function SendData() {
+        $result = [];
+
+        foreach(json_decode($this->ReadPropertyString('InstanceList'), true) as $entry) {
+            // Entry describes an instance
+            if (!isset($entry['parent']) || $entry['parent'] == 0) {
+                // Skip deleted objects
+                if (!IPS_InstanceExists($entry['objectID'])) {
+                    continue;
+                }
+
+                $configuration = @IPS_GetConfiguration($entry['objectID']);
+
+                if (is_string($configuration)) {
+                    $configuration = json_decode($configuration, true);
+                }
+
+                $result[$entry['id']] = [
+                    'object' => IPS_GetObject($entry['objectID']),
+                    'instance' => IPS_GetInstance($entry['objectID']),
+                    'configuration' => $configuration,
+                    'detectedType' => $entry['detectedType'],
+                    'correct' => $entry['correct'],
+                    'realType' => $entry['realType'],
+                    'remark' => $entry['remark'],
+                    'variables' => []
+                ];
+            }
+            // Others are variables
+            else {
+                // Skip deleted objects
+                if (!IPS_VariableExists($entry['objectID'])) {
+                    continue;
+                }
+
+                if (!isset($result[$entry['parent']]['variables'])) {
+                    throw new Exception('Instance for variable does not exist');
+                }
+
+                $result[$entry['parent']]['variables'][$entry['id']] = [
+                    'object' => IPS_GetObject($entry['objectID']),
+                    'variable' => IPS_GetVariable($entry['objectID']),
+                    'profile' => $this->GetProfile($entry['objectID']),
+                    'detectedType' => $entry['detectedType'],
+                    'correct' => $entry['correct'],
+                    'realType' => $entry['realType'],
+                    'remark' => $entry['remark']
+                ];
+            }
+        }
+
+        file_put_contents(__DIR__ . '/../evaluation.json', json_encode($result));
+        echo $this->Translate('Done');
     }
 
     private function GetProfile($variableID) {

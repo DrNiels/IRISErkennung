@@ -1,0 +1,11 @@
+{
+    "id": "{D0BB7294-39A6-4C8B-AF57-A10719EA796F}",
+    "name": "IRiSErkennung",
+    "type": 3,
+    "vendor": "",
+    "aliases": [],
+    "parentRequirements": [],
+    "childRequirements": [],
+    "implemented": [],
+    "prefix": "IE"
+}

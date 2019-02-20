@@ -1,0 +1,830 @@
+{
+    "Light (Actor)": [
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": true
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Licht"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Light"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": true
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 1
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Licht"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Light"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Weiß"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Weiss"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "White"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~AbsoluteColorTemperature.KNX"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~AbsoluteColorTemperatureDPT249.KNX"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Brightness.HM"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Brightness.KNX"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~HexColor"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Illumination"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": true
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 1
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Licht"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Light"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Weiß"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Weiss"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "White"
+                }
+            ]
+        }
+    ],
+    "Smoke Detector": [
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Rauch"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Smoke"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Rauch"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Alert"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Alert.Reversed"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Smoke"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Alert"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Alert.Reversed"
+                }
+            ]
+        }
+    ],
+    "Switch/Trigger (Sensor)": [
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Schalter"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Switch"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Knopf"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Button"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Dimmer"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Switch"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Switch.KNX"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~SwitchControl.KNX"
+                }
+            ]
+        }
+    ],
+    "Motion/Presence Sensor": [
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Präsenz"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Presence"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Bewegung"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Motion"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Motion"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Presence"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Presence.Reversed"
+                }
+            ]
+        }
+    ],
+    "Door Opener": [
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": true
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Tür"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Tuer"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Door"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Lock"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Lock.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~OpenClose.KNX"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": true
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Tür"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": true
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Tuer"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": true
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Door"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        }
+    ],
+    "Door Sensor": [
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Tür"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Tuer"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Door"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Lock"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Lock.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~OpenClose.KNX"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Tür"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Tuer"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Door"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        }
+    ],
+    "Window Opener": [
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": true
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Fenster"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Window"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": true
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Fenster"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": true
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Window"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        }
+    ],
+    "Window Sensor": [
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Fenster"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Window"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Fenster"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Window"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        }
+    ],
+    "Temperature Sensor": [
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 2
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Temperature"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Temperature"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Temperature.Fahrenheit"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Temperature.HM"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Temperature.Room"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~TemperatureDPT209.KNX"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Temperature214.KNX"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Temperature215.KNX"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~ValueAbsoluteTemperature.KNX"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~ValueTemp.KNX"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~ValueTempF.KNX"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Fenster"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        },
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": false
+                },
+                {
+                    "type": "VariableType",
+                    "parameter": 0
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": "Window"
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~Window.Reversed"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,12 @@
+{
+    "id": "{A3DE75F0-9B71-4720-AC4F-3760184DD151}",
+    "author": "Symcon GmbH",
+    "name": "IRiS Erkennung",
+    "url": "",
+    "version": "1.0",
+    "build": 0,
+    "date": 0,
+    "compatibility": {
+        "version": "5.0"
+    }
+}

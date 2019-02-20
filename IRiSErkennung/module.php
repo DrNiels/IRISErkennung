@@ -222,6 +222,21 @@ class IRiSErkennung extends IPSModule
         IPS_ApplyChanges($this->InstanceID);
     }
 
+    private function GetProfile($variableID) {
+        $variable = IPS_GetVariable($variableID);
+        $profileName = $variable['VariableCustomProfile'];
+        if ($profileName == '') {
+            $profileName = $variable['VariableProfile'];
+        }
+
+        if (IPS_VariableProfileExists($profileName)) {
+            return IPS_GetVariableProfile($profileName);
+        }
+        else {
+            return null;
+        }
+    }
+
     private function CheckRule($variableID, $rule) {
         switch ($rule['type']) {
             case 'Switchable': {
@@ -232,12 +247,32 @@ class IRiSErkennung extends IPSModule
 
             case 'VariableType': {
                 $variable = IPS_GetVariable($variableID);
-                return ($variable['VariableType'] == $rule['parameter']);
+                if (is_array($rule['parameter'])) {
+                    foreach ($rule['parameter'] as $possibleType) {
+                        if ($variable['VariableType'] == $possibleType) {
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+                else {
+                    return ($variable['VariableType'] == $rule['parameter']);
+                }
             }
 
             case 'NameContains': {
                 $name = strtolower(IPS_GetName($variableID));
-                return (strpos(strtolower($rule['parameter']), $name) !== false);
+                if (is_array($rule['parameter'])) {
+                    foreach ($rule['parameter'] as $possibleName) {
+                        if (strpos(strtolower($possibleName), $name) !== false) {
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+                else {
+                    return (strpos(strtolower($rule['parameter']), $name) !== false);
+                }
             }
 
             case 'InstanceNameContains': {
@@ -248,6 +283,18 @@ class IRiSErkennung extends IPSModule
             case 'HasProfile': {
                 $variable = IPS_GetVariable($variableID);
                 return ($variable['VariableProfile'] == $rule['parameter']) || ($variable['VariableCustomProfile'] == $rule['parameter']);
+            }
+
+            case 'HasProfileSuffix': {
+                $profile = $this->GetProfile($variableID);
+                if (!isset($profile['Suffix'])) {
+                    return false;
+                }
+                $suffix = $profile['Suffix'];
+                if (isset($rule['trim']) && $rule['trim']) {
+                    trim($suffix);
+                }
+                return ($suffix == $rule['parameter']);
             }
 
             default:

@@ -277,7 +277,17 @@ class IRiSErkennung extends IPSModule
 
             case 'InstanceNameContains': {
                 $name = strtolower(IPS_GetName(IPS_GetParent($variableID)));
-                return (strpos(strtolower($rule['parameter']), $name) !== false);
+                if (is_array($rule['parameter'])) {
+                    foreach ($rule['parameter'] as $possibleName) {
+                        if (strpos(strtolower($possibleName), $name) !== false) {
+                            return true;
+                        }
+                        return false;
+                    }
+                }
+                else {
+                    return (strpos(strtolower($rule['parameter']), $name) !== false);
+                }
             }
 
             case 'HasProfile': {

@@ -252,8 +252,8 @@ class IRiSErkennung extends IPSModule
                         if ($variable['VariableType'] == $possibleType) {
                             return true;
                         }
-                        return false;
                     }
+                    return false;
                 }
                 else {
                     return ($variable['VariableType'] == $rule['parameter']);
@@ -264,14 +264,14 @@ class IRiSErkennung extends IPSModule
                 $name = strtolower(IPS_GetName($variableID));
                 if (is_array($rule['parameter'])) {
                     foreach ($rule['parameter'] as $possibleName) {
-                        if (strpos(strtolower($possibleName), $name) !== false) {
+                        if (strpos($name, strtolower($possibleName)) !== false) {
                             return true;
                         }
-                        return false;
                     }
+                    return false;
                 }
                 else {
-                    return (strpos(strtolower($rule['parameter']), $name) !== false);
+                    return (strpos($name, strtolower($rule['parameter'])) !== false);
                 }
             }
 
@@ -279,14 +279,14 @@ class IRiSErkennung extends IPSModule
                 $name = strtolower(IPS_GetName(IPS_GetParent($variableID)));
                 if (is_array($rule['parameter'])) {
                     foreach ($rule['parameter'] as $possibleName) {
-                        if (strpos(strtolower($possibleName), $name) !== false) {
+                        if (strpos($name, strtolower($possibleName)) !== false) {
                             return true;
                         }
-                        return false;
                     }
+                    return false;
                 }
                 else {
-                    return (strpos(strtolower($rule['parameter']), $name) !== false);
+                    return (strpos(strtolower($name, $rule['parameter'])) !== false);
                 }
             }
 
@@ -302,7 +302,7 @@ class IRiSErkennung extends IPSModule
                 }
                 $suffix = $profile['Suffix'];
                 if (isset($rule['trim']) && $rule['trim']) {
-                    trim($suffix);
+                    $suffix = trim($suffix);
                 }
                 return ($suffix == $rule['parameter']);
             }

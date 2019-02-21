@@ -14,15 +14,7 @@
             "sufficient": [
                 {
                     "type": "NameContains",
-                    "parameter": "Licht"
-                },
-                {
-                    "type": "NameContains",
-                    "parameter": "Light"
-                },
-                {
-                    "type": "NameContains",
-                    "parameter": "Beleuchtung"
+                    "parameter": [ "Licht", "Light", "Beleuchtung", "Lampe", "Lamp" ]
                 }
             ]
         },
@@ -38,75 +30,7 @@
                 },
                 {
                     "type": "InstanceNameContains",
-                    "parameter": "Licht"
-                }
-            ],
-            "sufficient": [
-                {
-                    "type": "NameContains",
-                    "parameter": "Status"
-                },
-                {
-                    "type": "HasProfile",
-                    "parameter": "~Switch"
-                },
-                {
-                    "type": "HasProfile",
-                    "parameter": "~Switch.KNX"
-                },
-                {
-                    "type": "HasProfile",
-                    "parameter": "~SwitchControl.KNX"
-                }
-            ]
-        },
-        {
-            "required": [
-                {
-                    "type": "Switchable",
-                    "parameter": true
-                },
-                {
-                    "type": "VariableType",
-                    "parameter": 0
-                },
-                {
-                    "type": "InstanceNameContains",
-                    "parameter": "Light"
-                }
-            ],
-            "sufficient": [
-                {
-                    "type": "NameContains",
-                    "parameter": "Status"
-                },
-                {
-                    "type": "HasProfile",
-                    "parameter": "~Switch"
-                },
-                {
-                    "type": "HasProfile",
-                    "parameter": "~Switch.KNX"
-                },
-                {
-                    "type": "HasProfile",
-                    "parameter": "~SwitchControl.KNX"
-                }
-            ]
-        },
-        {
-            "required": [
-                {
-                    "type": "Switchable",
-                    "parameter": true
-                },
-                {
-                    "type": "VariableType",
-                    "parameter": 0
-                },
-                {
-                    "type": "InstanceNameContains",
-                    "parameter": "Beleuchtung"
+                    "parameter": [ "Licht", "Light", "Beleuchtung", "Lampe", "Lamp" ]
                 }
             ],
             "sufficient": [
@@ -956,6 +880,30 @@
                 {
                     "type": "HasProfile",
                     "parameter": "~WindowDoor.KNX"
+                }
+            ]
+        }
+    ],
+    "Gas": [
+        {
+            "required": [
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": "Gas"
+                }
+            ]
+        }
+    ],
+    "Photovoltaics": [
+        {
+            "required": [
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": ["Photovoltaics", "Photovoltaik", "Solar"]
                 }
             ]
         }

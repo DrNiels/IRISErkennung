@@ -265,7 +265,7 @@ class IRiSErkennung extends IPSModule
 
     public function GenerateEvaluationFile() {
         $data = $this->GenerateEvaluationData();
-        file_put_contents(__DIR__ . '/../evaluation.json');
+        file_put_contents(__DIR__ . '/../evaluation.json', $data);
 
         echo $this->Translate('Done');
     }

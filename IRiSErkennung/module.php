@@ -118,7 +118,8 @@ class IRiSErkennung extends IPSModule
                         ], [
                             "type" => "Button",
                             "caption" => "Send data to Symcon",
-                            "onClick" => 'IE_SendData($id);'
+                            "onClick" => 'IE_SendData($id);',
+                            "confirm" => "This operation will send the device list with its configuration and your annotations to Symcon to verify and improve the automatical identification of instances within the research project IRiS. Continue?"
                         ]
                     ]
                 ]
@@ -281,8 +282,30 @@ class IRiSErkennung extends IPSModule
             }
         }
 
-        file_put_contents(__DIR__ . '/../evaluation.json', json_encode($result));
-        echo $this->Translate('Done');
+        $library = json_decode(file_get_contents(__DIR__ . '/../library.json'), true);
+        $data = json_encode($result);
+        $response = @file_get_contents('https://tzuhj5rqvd.execute-api.eu-west-1.amazonaws.com/dev/?version=' . $library['version'], false, stream_context_create([
+            'http' => [
+                'method'           => 'POST',
+                'header'           => "Content-type: application/json\r\nConnection: close\r\nContent-length: " . strlen($data) . "\r\n",
+                'content'          => $data,
+                'ignore_errors'    => true
+            ],
+        ]));
+
+        if ($response === false) {
+            echo "Failed: \n" . print_r(error_get_last(), true);
+        } elseif (json_decode($response, true) !== "OK") {
+            $this->SendDebug('Request Sync Failed', $response, 0);
+            $decode = json_decode($response, true);
+            if (isset($decode['error']['message'])) {
+                echo "Failed: \n" . $decode['error']['message'];
+            } else {
+                echo 'Failed!';
+            }
+        } else {
+            echo $this->Translate('Done');
+        }
     }
 
     private function GetProfile($variableID) {

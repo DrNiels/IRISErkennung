@@ -14,7 +14,7 @@
             "sufficient": [
                 {
                     "type": "NameContains",
-                    "parameter": [ "Licht", "Light", "Beleuchtung", "Lampe", "Lamp" ]
+                    "parameter": [ "Licht", "Light", "Beleuchtung", "Lampe", "Lamp", "Halogen" ]
                 }
             ]
         },
@@ -30,7 +30,7 @@
                 },
                 {
                     "type": "InstanceNameContains",
-                    "parameter": [ "Licht", "Light", "Beleuchtung", "Lampe", "Lamp" ]
+                    "parameter": [ "Licht", "Light", "Beleuchtung", "Lampe", "Lamp", "Halogen" ]
                 }
             ],
             "sufficient": [
@@ -207,7 +207,7 @@
                 },
                 {
                     "type": "InstanceNameContains",
-                    "parameter": "Rauch"
+                    "parameter": ["Rauch", "Smoke"]
                 }
             ],
             "sufficient": [
@@ -345,7 +345,7 @@
                 },
                 {
                     "type": "VariableType",
-                    "parameter": 0
+                    "parameter": [0, 1]
                 }
             ],
             "sufficient": [
@@ -372,6 +372,10 @@
                 {
                     "type": "HasProfile",
                     "parameter": "~OpenClose.KNX"
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": "Doorbird.Door"
                 }
             ]
         },
@@ -387,67 +391,7 @@
                 },
                 {
                     "type": "InstanceNameContains",
-                    "parameter": "Tür"
-                }
-            ],
-            "sufficient": [
-                {
-                    "type": "HasProfile",
-                    "parameter": "~Window"
-                },
-                {
-                    "type": "HasProfile",
-                    "parameter": "~Window.Reversed"
-                },
-                {
-                    "type": "HasProfile",
-                    "parameter": "~WindowDoor.KNX"
-                }
-            ]
-        },
-        {
-            "required": [
-                {
-                    "type": "Switchable",
-                    "parameter": true
-                },
-                {
-                    "type": "VariableType",
-                    "parameter": 0
-                },
-                {
-                    "type": "InstanceNameContains",
-                    "parameter": "Tuer"
-                }
-            ],
-            "sufficient": [
-                {
-                    "type": "HasProfile",
-                    "parameter": "~Window"
-                },
-                {
-                    "type": "HasProfile",
-                    "parameter": "~Window.Reversed"
-                },
-                {
-                    "type": "HasProfile",
-                    "parameter": "~WindowDoor.KNX"
-                }
-            ]
-        },
-        {
-            "required": [
-                {
-                    "type": "Switchable",
-                    "parameter": true
-                },
-                {
-                    "type": "VariableType",
-                    "parameter": 0
-                },
-                {
-                    "type": "InstanceNameContains",
-                    "parameter": "Door"
+                    "parameter": ["Tür", "Tuer", "Door"]
                 }
             ],
             "sufficient": [

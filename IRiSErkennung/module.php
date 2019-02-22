@@ -120,6 +120,11 @@ class IRiSErkennung extends IPSModule
                             "caption" => "Send data to Symcon",
                             "onClick" => 'IE_SendData($id);',
                             "confirm" => "This operation will send the device list with its configuration and your annotations to Symcon to verify and improve the automatical identification of instances within the research project IRiS. Continue?"
+                        ], [
+                            "type" => "Button",
+                            "caption" => "Generate Evaluation File",
+                            "onClick" => 'IE_GenerateEvaluationFile($id);',
+                            "confirm" => "This operation will generate a file taht contains the device list with its configuration and your annotations. Please send the file to Symcon to verify and improve the automatical identification of instances within the research project IRiS. Continue?"
                         ]
                     ]
                 ]
@@ -232,6 +237,40 @@ class IRiSErkennung extends IPSModule
     }
 
     public function SendData() {
+        $library = json_decode(file_get_contents(__DIR__ . '/../library.json'), true);
+        $data = $this->GenerateEvaluationData();
+        $response = @file_get_contents('https://tzuhj5rqvd.execute-api.eu-west-1.amazonaws.com/dev/?version=' . $library['version'], false, stream_context_create([
+            'http' => [
+                'method'           => 'POST',
+                'header'           => "Content-type: application/json\r\nConnection: close\r\nContent-length: " . strlen($data) . "\r\n",
+                'content'          => $data,
+                'ignore_errors'    => true
+            ],
+        ]));
+
+        if ($response === false) {
+            echo "Failed: \n" . print_r(error_get_last(), true);
+        } elseif (json_decode($response, true) !== "OK") {
+            $this->SendDebug('Request Sync Failed', $response, 0);
+            $decode = json_decode($response, true);
+            if (isset($decode['error']['message'])) {
+                echo "Failed: \n" . $decode['error']['message'];
+            } else {
+                echo 'Failed!';
+            }
+        } else {
+            echo $this->Translate('Done');
+        }
+    }
+
+    public function GenerateEvaluationFile() {
+        $data = $this->GenerateEvaluationData();
+        file_put_contents(__DIR__ . '/../evaluation.json');
+
+        echo $this->Translate('Done');
+    }
+
+    private function GenerateEvaluationData() {
         $result = [];
 
         foreach(json_decode($this->ReadPropertyString('InstanceList'), true) as $entry) {
@@ -282,30 +321,7 @@ class IRiSErkennung extends IPSModule
             }
         }
 
-        $library = json_decode(file_get_contents(__DIR__ . '/../library.json'), true);
-        $data = json_encode($result);
-        $response = @file_get_contents('https://tzuhj5rqvd.execute-api.eu-west-1.amazonaws.com/dev/?version=' . $library['version'], false, stream_context_create([
-            'http' => [
-                'method'           => 'POST',
-                'header'           => "Content-type: application/json\r\nConnection: close\r\nContent-length: " . strlen($data) . "\r\n",
-                'content'          => $data,
-                'ignore_errors'    => true
-            ],
-        ]));
-
-        if ($response === false) {
-            echo "Failed: \n" . print_r(error_get_last(), true);
-        } elseif (json_decode($response, true) !== "OK") {
-            $this->SendDebug('Request Sync Failed', $response, 0);
-            $decode = json_decode($response, true);
-            if (isset($decode['error']['message'])) {
-                echo "Failed: \n" . $decode['error']['message'];
-            } else {
-                echo 'Failed!';
-            }
-        } else {
-            echo $this->Translate('Done');
-        }
+        return json_encode($result);
     }
 
     private function GetProfile($variableID) {

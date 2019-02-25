@@ -851,5 +851,29 @@
                 }
             ]
         }
+    ],
+    "Shutter": [
+        {
+            "required": [
+                {
+                    "type": "Switchable",
+                    "parameter": true
+                }
+            ],
+            "sufficient": [
+                {
+                    "type": "NameContains",
+                    "parameter": ["Shutter", "Rolladen", "Rolläden"]
+                },
+                {
+                    "type": "InstanceNameContains",
+                    "parameter": ["Shutter", "Rolladen", "Rolläden"]
+                },
+                {
+                    "type": "HasProfile",
+                    "parameter": ["~Shutter", "~ShutterAction.ZWave", "~ShutterAssociation", "~ShutterMoveStep", "~ShutterMoveStop", "~ShutterPosition.100", "~ShutterPosition.255"]
+                }
+            ]
+        }
     ]
 }

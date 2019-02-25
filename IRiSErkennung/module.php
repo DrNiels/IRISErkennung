@@ -282,7 +282,8 @@ class IRiSErkennung extends IPSModule
 
     public function SendData() {
         $library = json_decode(file_get_contents(__DIR__ . '/../library.json'), true);
-        $data = $this->GenerateEvaluationData();
+        $data = base64_encode(gzcompress($this->GenerateEvaluationData()));
+
         $response = @file_get_contents('https://tzuhj5rqvd.execute-api.eu-west-1.amazonaws.com/dev/?version=' . $library['version'], false, stream_context_create([
             'http' => [
                 'method'           => 'POST',
@@ -296,12 +297,7 @@ class IRiSErkennung extends IPSModule
             echo "Failed: \n" . print_r(error_get_last(), true);
         } elseif (json_decode($response, true) !== "OK") {
             $this->SendDebug('Request Sync Failed', $response, 0);
-            $decode = json_decode($response, true);
-            if (isset($decode['error']['message'])) {
-                echo "Failed: \n" . $decode['error']['message'];
-            } else {
-                echo 'Failed!';
-            }
+            echo "Failed: \n" . $response;
         } else {
             echo $this->Translate('Done');
         }

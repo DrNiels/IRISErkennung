@@ -9,6 +9,7 @@ class IRiSErkennung extends IPSModule
         parent::Create();
 
         $this->RegisterPropertyString('InstanceList', '[]');
+        $this->RegisterPropertyString('UndetectedInstancesList', '[]');
     }
 
     public function Destroy()
@@ -27,6 +28,16 @@ class IRiSErkennung extends IPSModule
     public function GetConfigurationForm()
     {
         $values = [];
+
+        $rulesFile = json_decode(file_get_contents(__DIR__ . '/rules.json'), true);
+        $typeOptions = [["caption" => "-", "value" => "-"]];
+        foreach($rulesFile as $type => $rules) {
+            $typeOptions[] = ["caption" => $type, "value" => $type];
+        }
+
+        $typeOptions[] = ["caption" => "No type", "value" => "No type"];
+        $typeOptionsNoDash = $typeOptions;
+        array_shift($typeOptionsNoDash);
 
         foreach (json_decode($this->ReadPropertyString('InstanceList'), true) as $object) {
             $newValue = [
@@ -81,19 +92,7 @@ class IRiSErkennung extends IPSModule
                             "width" => "200px",
                             "edit" => [
                                 "type" => "Select",
-                                "options" => [
-                                    ["caption" => "-", "value" => 0],
-                                    ["caption" => "Light (Actor)", "value" => 1],
-                                    ["caption" => "Smoke Detector", "value" => 2],
-                                    ["caption" => "Switch/Trigger (Sensor)", "value" => 3],
-                                    ["caption" => "Motion/Presence Sensor", "value" => 4],
-                                    ["caption" => "Door Opener", "value" => 5],
-                                    ["caption" => "Door Sensor", "value" => 6],
-                                    ["caption" => "Window Opener", "value" => 7],
-                                    ["caption" => "Window Sensor", "value" => 8],
-                                    ["caption" => "Temperature Sensor", "value" => 9],
-                                    ["caption" => "Not relevant for IRiS", "value" => 10]
-                                ]
+                                "options" => $typeOptions
                             ]
                         ], [
                             "name" => "remark",
@@ -104,6 +103,51 @@ class IRiSErkennung extends IPSModule
                             ]
                         ]],
                     "values" => $values
+                ],
+                [
+                    "type" => "PopupButton",
+                    "caption" => "Add further instances",
+                    "popup" => [
+                        "caption" => "Further instances that should be in the list",
+                        "items" => [
+                            [
+                                "type" => "List",
+                                "name" => "UndetectedInstancesList",
+                                "rowCount" => 15,
+                                "add" => true,
+                                "delete" => true,
+                                "columns" => [
+                                    [
+                                        "name" => "objectID",
+                                        "caption" => "Instance",
+                                        "width" => "auto",
+                                        "add" => 0,
+                                        "edit" => [
+                                            "type" => "SelectInstance"
+                                        ]
+                                    ],[
+                                        "name" => "type",
+                                        "caption" => "Type",
+                                        "width" => "150px",
+                                        "add" => "No type",
+                                        "edit" => [
+                                            "type" => "Select",
+                                            "options" => $typeOptionsNoDash
+                                        ]
+                                    ], [
+                                        "name" => "remark",
+                                        "caption" => "Remark",
+                                        "width" => "150px",
+                                        "add" => "",
+                                        "edit" => [
+                                            "type" => "ValidationTextBox"
+                                        ]
+                                    ]
+                                ],
+                                "values" => []
+                            ]
+                        ]
+                    ]
                 ]
             ],
             "actions" => [
@@ -205,7 +249,7 @@ class IRiSErkennung extends IPSModule
                     }
 
                     if ($type == '') {
-                        $type = 'Not relevant for IRiS';
+                        $type = 'No type';
                     }
 
                     $instanceValues[] = [
@@ -221,7 +265,7 @@ class IRiSErkennung extends IPSModule
             }
 
             if ($instanceType == '') {
-                $instanceType = 'Not relevant for IRiS';
+                continue;
             }
 
             $instanceValues[0]['detectedType'] = $this->Translate($instanceType);
@@ -271,7 +315,55 @@ class IRiSErkennung extends IPSModule
     }
 
     private function GenerateEvaluationData() {
-        $result = [];
+        $result = [
+            'numberOfInstances' => sizeof(IPS_GetInstanceList()),
+            'instances' => []
+        ];
+
+        foreach(json_decode($this->ReadPropertyString('UndetectedInstancesList'), true) as $entry) {
+            // Skip deleted objects
+            if (!IPS_InstanceExists($entry['objectID'])) {
+                continue;
+            }
+
+            $configuration = @IPS_GetConfiguration($entry['objectID']);
+
+            if (is_string($configuration)) {
+                $configuration = json_decode($configuration, true);
+            }
+
+            $result['instances'][$entry['objectID']] = [
+                'object' => IPS_GetObject($entry['objectID']),
+                'instance' => IPS_GetInstance($entry['objectID']),
+                'configuration' => $configuration,
+                'detectedType' => 'No type',
+                'correct' => false,
+                'realType' => $entry['type'],
+                'remark' => $entry['remark'],
+                'variables' => []
+            ];
+
+            foreach (IPS_GetChildrenIDs($entry['objectID']) as $childID) {
+                if (!IPS_VariableExists($childID)) {
+                    continue;
+                }
+
+                $object = IPS_GetObject($childID);
+                if (($object['ObjectIdent'] == '')) {
+                    continue;
+                }
+
+                $result['instances'][$entry['objectID']]['variables'][$childID] = [
+                    'object' => $object,
+                    'variable' => IPS_GetVariable($childID),
+                    'profile' => $this->GetProfile($childID),
+                    'detectedType' => 'No type',
+                    'correct' => false,
+                    'realType' => $entry['type'],
+                    'remark' => ''
+                ];
+            }
+        }
 
         foreach(json_decode($this->ReadPropertyString('InstanceList'), true) as $entry) {
             // Entry describes an instance
@@ -287,7 +379,7 @@ class IRiSErkennung extends IPSModule
                     $configuration = json_decode($configuration, true);
                 }
 
-                $result[$entry['id']] = [
+                $result['instances'][$entry['id']] = [
                     'object' => IPS_GetObject($entry['objectID']),
                     'instance' => IPS_GetInstance($entry['objectID']),
                     'configuration' => $configuration,
@@ -305,11 +397,11 @@ class IRiSErkennung extends IPSModule
                     continue;
                 }
 
-                if (!isset($result[$entry['parent']]['variables'])) {
+                if (!isset($result['instances'][$entry['parent']]['variables'])) {
                     throw new Exception('Instance for variable does not exist');
                 }
 
-                $result[$entry['parent']]['variables'][$entry['id']] = [
+                $result['instances'][$entry['parent']]['variables'][$entry['id']] = [
                     'object' => IPS_GetObject($entry['objectID']),
                     'variable' => IPS_GetVariable($entry['objectID']),
                     'profile' => $this->GetProfile($entry['objectID']),
@@ -394,7 +486,17 @@ class IRiSErkennung extends IPSModule
 
             case 'HasProfile': {
                 $variable = IPS_GetVariable($variableID);
-                return ($variable['VariableProfile'] == $rule['parameter']) || ($variable['VariableCustomProfile'] == $rule['parameter']);
+                if (is_array($rule['parameter'])) {
+                    foreach ($rule['parameter'] as $possibleProfile) {
+                        if (($variable['VariableProfile'] == $rule['parameter']) || ($variable['VariableCustomProfile'] == $rule['parameter'])) {
+                            return true;
+                        }
+                    }
+                    return false;
+                }
+                else {
+                    return ($variable['VariableProfile'] == $rule['parameter']) || ($variable['VariableCustomProfile'] == $rule['parameter']);
+                }
             }
 
             case 'HasProfileSuffix': {

@@ -152,7 +152,7 @@ class IRiSErkennung extends IPSModule
                 'objectID' => $instanceID,
                 'detectedType' => '',
                 'correct' => true,
-                'realType' => 0,
+                'realType' => '-',
                 'remark' => ''
             ]];
 
@@ -216,7 +216,7 @@ class IRiSErkennung extends IPSModule
                         'objectID' => $childID,
                         'detectedType' => $this->Translate($type),
                         'correct' => true,
-                        'realType' => 0,
+                        'realType' => '-',
                         'remark' => ''
                     ];
                 }

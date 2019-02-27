@@ -9,7 +9,6 @@ class IRiSErkennung extends IPSModule
         parent::Create();
 
         $this->RegisterPropertyString('InstanceList', '[]');
-        $this->RegisterPropertyString('UndetectedInstancesList', '[]');
     }
 
     public function Destroy()
@@ -53,6 +52,10 @@ class IRiSErkennung extends IPSModule
             }
             else {
                 $newValue['objectName'] = sprintf($this->Translate('Object #%u does not exist'), $object['objectID']);
+            }
+
+            if (($object['detectedType'] === 'No type') && ($object['correct'])) {
+                $newValue['rowColor'] = '#DFDFDF';
             }
             $values[] = $newValue;
         }
@@ -103,51 +106,6 @@ class IRiSErkennung extends IPSModule
                             ]
                         ]],
                     "values" => $values
-                ],
-                [
-                    "type" => "PopupButton",
-                    "caption" => "Add further instances",
-                    "popup" => [
-                        "caption" => "Further instances that should be in the list",
-                        "items" => [
-                            [
-                                "type" => "List",
-                                "name" => "UndetectedInstancesList",
-                                "rowCount" => 15,
-                                "add" => true,
-                                "delete" => true,
-                                "columns" => [
-                                    [
-                                        "name" => "objectID",
-                                        "caption" => "Instance",
-                                        "width" => "auto",
-                                        "add" => 0,
-                                        "edit" => [
-                                            "type" => "SelectInstance"
-                                        ]
-                                    ],[
-                                        "name" => "type",
-                                        "caption" => "Type",
-                                        "width" => "150px",
-                                        "add" => "No type",
-                                        "edit" => [
-                                            "type" => "Select",
-                                            "options" => $typeOptionsNoDash
-                                        ]
-                                    ], [
-                                        "name" => "remark",
-                                        "caption" => "Remark",
-                                        "width" => "150px",
-                                        "add" => "",
-                                        "edit" => [
-                                            "type" => "ValidationTextBox"
-                                        ]
-                                    ]
-                                ],
-                                "values" => []
-                            ]
-                        ]
-                    ]
                 ]
             ],
             "actions" => [
@@ -265,7 +223,7 @@ class IRiSErkennung extends IPSModule
             }
 
             if ($instanceType == '') {
-                continue;
+                $instanceType = 'No type';
             }
 
             $instanceValues[0]['detectedType'] = $this->Translate($instanceType);
@@ -316,56 +274,16 @@ class IRiSErkennung extends IPSModule
             'instances' => []
         ];
 
-        foreach(json_decode($this->ReadPropertyString('UndetectedInstancesList'), true) as $entry) {
-            // Skip deleted objects
-            if (!IPS_InstanceExists($entry['objectID'])) {
-                continue;
-            }
-
-            $configuration = @IPS_GetConfiguration($entry['objectID']);
-
-            if (is_string($configuration)) {
-                $configuration = json_decode($configuration, true);
-            }
-
-            $result['instances'][$entry['objectID']] = [
-                'object' => IPS_GetObject($entry['objectID']),
-                'instance' => IPS_GetInstance($entry['objectID']),
-                'configuration' => $configuration,
-                'detectedType' => 'No type',
-                'correct' => false,
-                'realType' => $entry['type'],
-                'remark' => $entry['remark'],
-                'variables' => []
-            ];
-
-            foreach (IPS_GetChildrenIDs($entry['objectID']) as $childID) {
-                if (!IPS_VariableExists($childID)) {
-                    continue;
-                }
-
-                $object = IPS_GetObject($childID);
-                if (($object['ObjectIdent'] == '')) {
-                    continue;
-                }
-
-                $result['instances'][$entry['objectID']]['variables'][$childID] = [
-                    'object' => $object,
-                    'variable' => IPS_GetVariable($childID),
-                    'profile' => $this->GetProfile($childID),
-                    'detectedType' => 'No type',
-                    'correct' => false,
-                    'realType' => $entry['type'],
-                    'remark' => ''
-                ];
-            }
-        }
-
         foreach(json_decode($this->ReadPropertyString('InstanceList'), true) as $entry) {
             // Entry describes an instance
             if (!isset($entry['parent']) || $entry['parent'] == 0) {
                 // Skip deleted objects
                 if (!IPS_InstanceExists($entry['objectID'])) {
+                    continue;
+                }
+
+                // If the instance has no type, skip it
+                if (($entry['detectedType'] == 'No type') && ($entry['correct'])) {
                     continue;
                 }
 
@@ -393,8 +311,9 @@ class IRiSErkennung extends IPSModule
                     continue;
                 }
 
+                // Skip variable if there is no parent. This is possible if the parent had no type
                 if (!isset($result['instances'][$entry['parent']]['variables'])) {
-                    throw new Exception('Instance for variable does not exist');
+                    continue;
                 }
 
                 $result['instances'][$entry['parent']]['variables'][$entry['id']] = [

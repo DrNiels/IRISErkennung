@@ -346,6 +346,10 @@
                     "parameter": "Motion"
                 },
                 {
+                    "type": "NameContains",
+                    "parameter": "PIR"
+                },
+                {
                     "type": "HasProfile",
                     "parameter": "~Motion"
                 },

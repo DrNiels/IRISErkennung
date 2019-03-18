@@ -85,6 +85,14 @@
                     "parameter": "White"
                 },
                 {
+                    "type": "NameContains",
+                    "parameter": "Brightness"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Helligkeit"
+                },
+                {
                     "type": "HasProfile",
                     "parameter": "~AbsoluteColorTemperature.KNX"
                 },
@@ -276,6 +284,22 @@
                 {
                     "type": "NameContains",
                     "parameter": "Dimmer"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Key"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Press"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Drücken"
+                },
+                {
+                    "type": "NameContains",
+                    "parameter": "Druecken"
                 },
                 {
                     "type": "HasProfile",

@@ -50,24 +50,26 @@ Erkenne Geräte        | Die aktuelle Liste "Erkannte Geräte" wird zurückgeset
 Sende Daten zu Symcon | Der aktuelle Stand der Liste wird anonymisiert an Symcon geschickt, damit die Daten zur Verifikation und Verbesserung der Geräteerkennung verwendet werden können. Die Daten beinhalten die Konfiguration der einzelnen Instanzen und Variablen, auf deren Basis die Entscheidung zur Typenzuweisung getroffen wird
 Öffne IRiS-Homepage   | Öffnet die IRiS-Homepage
 
-__Mögliche Gerätetypen__
+__Mögliche Typen für Statusvariablen__
 
 Typ                      | Anmerkungen
 ------------------------ | --------------------
-Licht (Aktor)            | -
-Rauchmelder              | -
-Taster/Schalter (Sensor) | Die Variable/Instanz beschreibt einen Taster oder Schalter, welcher nur physikalisch betätigt werden kann. Eine Aktualisierung der Variable sollte also bedeuten, dass sich eine Person beim Gerät befindet.
-Bewegungs-/Präsenzmelder | -
-Türöffner                | -
-Türsensor                | -
-Fensteröffner            | -
-Fenstersensor            | -
-Temperatursensor         | -
-Gas                      | Das Gerät hat mit Gas zu tun, beispielsweise eine Gasheizung, und ist im Brandfall somit als Gefahrenquelle zu sehen.
-Photovoltaik             | Ein Teil der Photovoltaikanlage
-Rollladen                | -
-Kein Typ                 | Keiner der obigen Typen passt zu der Variablen/der Instanz
-Mehrere Typen            | Dieser Typ ist nur für Instanzen möglich und beschreibt, dass die Instanz die Funktion mehrerer Typen übernimmt, beispielsweise ein Bewegungsmelder mit Temperatursensor
+Licht (Aktor)            | Die Variable beschreibt ein schaltbares Licht. Die Variable kann verwendet werden um ein Licht ein- oder auszuschalten, die Helligkeit einzustellen oder die Farbe anzupassen
+Rauchmelder              | Die Variable beschreibt den Alarmzustand eines Rauchmelders und sollte genau dann auslösen, wenn Rauch erkannt wurde
+Taster/Schalter (Sensor) | Die Variable beschreibt den Schaltzustand einen Taster oder Schalter, welcher nur physikalisch betätigt werden kann. Eine Aktualisierung der Variable sollte also bedeuten, dass sich eine Person beim Gerät befindet und den Taster oder Schalter betätigt hat.
+Bewegungs-/Präsenzmelder | Die Variable beschreibt, ob eine Person anwesend ist
+Türöffner                | Die Variable kann geschaltet werden um eine Tür zu öffnen oder zu schließen
+Türsensor                | Die Variable enthält die Information, ob eine Tür aktuell geöffnet oder geschlossen ist
+Fensteröffner            | Die Variable kann geschaltet werden um ein Fenster zu öffnen oder zu schließen
+Fenstersensor            | Die Variable enthält die Information, ob ein Fenster aktuell geöffnet oder geschlossen ist
+Temperatursensor         | Die Variable enthält die aktuelle Temperatur in einem Raum
+Gas                      | Die Variable hat mit Gas zu tun, beispielsweise der Status einer Gasheizung, und weist im Brandfall somit auf eine Gefahrenquelle hin.
+Photovoltaik             | Die Variable ist Teil einer Photovoltaikanlage, beispielsweise der dazugehörige Energiegewinn
+Rollladen                | Die Variable beschreibt den aktuellen Stand der Rollläden
+Kein Typ                 | Keiner der obigen Typen passt zu der Variablen
+
+__Mögliche Typen für Instanzen__
+Haben alle Statusvariablen einer Instanz, die einen Typ haben, den selben Typ, so wird dieser Typ auch der Instanz zugewiesen. Haben die Statusvariablen verschiedene Typen, so erhält die Instanz den Typ "Mehrere Typen".
 
 ### 5. Statusvariablen und Profile
 

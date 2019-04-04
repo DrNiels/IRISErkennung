@@ -54,7 +54,7 @@ class IRiSErkennung extends IPSModule
                 $newValue['objectName'] = sprintf($this->Translate('Object #%u does not exist'), $object['objectID']);
             }
 
-            if (($object['detectedType'] === 'No type') && ($object['correct'])) {
+            if ((($object['detectedType'] === 'No type') || ($object['detectedType'] === $this->Translate('No type'))) && ($object['correct'])) {
                 $newValue['rowColor'] = '#DFDFDF';
             }
             $values[] = $newValue;
@@ -116,7 +116,7 @@ class IRiSErkennung extends IPSModule
                             "type" => "Button",
                             "caption" => "Detect devices",
                             "onClick" => 'IE_Detect($id);',
-                            "confirm" => "This operation will reset all current configuration and reset the list. Are you sure?"
+                            "confirm" => "This operation will reset all current configuration and recreate the list. Are you sure?"
                         ], [
                             "type" => "Button",
                             "caption" => "Send data to Symcon",
@@ -124,9 +124,8 @@ class IRiSErkennung extends IPSModule
                             "confirm" => "This operation will send the device list with its configuration and your annotations to Symcon to verify and improve the automatical identification of instances within the research project IRiS. Continue?"
                         ], [
                             "type" => "Button",
-                            "caption" => "Generate Evaluation File",
-                            "onClick" => 'IE_GenerateEvaluationFile($id);',
-                            "confirm" => "This operation will generate a file taht contains the device list with its configuration and your annotations. Please send the file to Symcon to verify and improve the automatical identification of instances within the research project IRiS. Continue?"
+                            "caption" => "Open IRiS homepage",
+                            "onClick" => 'echo "https://www.symcon.de/forschung/iris";'
                         ]
                     ]
                 ]
